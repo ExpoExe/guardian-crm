@@ -11,13 +11,13 @@ import {
 	FormText 
 } from 'reactstrap';
 
-export default class UsersDelete extends React.Component {
+export default class ClientDelete extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
 			deleteID: '',
-			deletedUser: false
+			deletedClient: false
 		};
 
 		this.updateInput = this.updateInput.bind(this);
@@ -39,7 +39,7 @@ export default class UsersDelete extends React.Component {
 	handleSubmit (e) {
 		e.preventDefault();
 		
-		fetch('/users/delete', {
+		fetch('/client/delete', {
 			method: 'POST',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
 			headers: new Headers({
@@ -51,7 +51,7 @@ export default class UsersDelete extends React.Component {
 
 		this.setState({
 			deleteID: '',
-			deletedUser: true
+			deletedClient: true
 		});
 
 	}
@@ -59,15 +59,15 @@ export default class UsersDelete extends React.Component {
 	handleDelete (e) {
 		e.preventDefault();
 		this.setState({
-			deletedUser:false
+			deletedClient:false
 		});
 	}
 
 	render() {
-		if (this.state.deletedUser){
+		if (this.state.deletedClient){
 			return (
 				<div style={{maxWidth:'1200px', fontSize: '80%', margin:'2% auto'}}>
-					<h4>Deleted User</h4>
+					<h4>Deleted Client</h4>
 					<FormGroup row>
 						<Col sm={12}>
 							<Button onClick={this.handleDelete} block>Delete another</Button>
@@ -81,7 +81,7 @@ export default class UsersDelete extends React.Component {
 				<div style={{maxWidth:'1200px', fontSize: '80%', margin:'2% auto'}}>
 					<Form onSubmit={this.handleSubmit}>
 						<FormGroup row>
-							<Label for="deleteID" sm={4}>User ID</Label>
+							<Label for="deleteID" sm={4}>Client ID</Label>
 							<Col sm={8}>
 								<Input onChange={this.updateInput} value={this.state.deleteID} type="text" name="deleteID" id="deleteID" />
 							</Col>

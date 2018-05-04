@@ -47,21 +47,21 @@ export default class NavBar extends React.Component {
 			return (
 				<div>
 					<Navbar color="light" light expand="md">
-						<NavbarBrand tag={Link} to="/users">CRM</NavbarBrand>
+						<NavbarBrand tag={Link} to="/client">CRM</NavbarBrand>
 						<NavbarToggler onClick={this.toggleNavbar} />
 						<Collapse isOpen={this.state.isOpen} navbar>
 							<Nav className="ml-auto" navbar>
 								<NavItem>
-									<NavLink tag={Link} to="/users/list">User List</NavLink>
+									<NavLink tag={Link} to="/client/list">Client List</NavLink>
 								</NavItem>
 								<NavItem>
-									<NavLink tag={Link} to="/users/create">Create User</NavLink>
+									<NavLink tag={Link} to="/client/create">Create Client</NavLink>
 								</NavItem>
 								<NavItem>
-									<NavLink tag={Link} to="/users/delete">Delete User</NavLink>
+									<NavLink tag={Link} to="/client/delete">Delete Client</NavLink>
 								</NavItem>
 								<NavItem>
-									<NavLink tag={Link} to="/users/update">Update User</NavLink>
+									<NavLink tag={Link} to="/client/update">Update Client</NavLink>
 								</NavItem>
 								<NavItem>
 									<NavLink onClick={this.handleLogout}>Logout</NavLink>

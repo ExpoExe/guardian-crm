@@ -37,7 +37,7 @@ export default class Login extends React.Component {
 	render() {
 		if(this.state.loggedIn){
 			return(
-				<Redirect to='/users' />
+				<Redirect to='/client' />
 			);
 		} else {
 				

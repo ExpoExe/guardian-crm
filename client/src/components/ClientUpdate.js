@@ -11,7 +11,7 @@ import {
 	FormText 
 } from 'reactstrap';
 
-export default class UsersUpdate extends React.Component {
+export default class ClientUpdate extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -21,12 +21,12 @@ export default class UsersUpdate extends React.Component {
 			updatePopularity: 0,
 			updateAge: 0,
 			updateID: '',
-			updatedUser: false
+			updatedClient: false
 		};
 
 		this.updateInput = this.updateInput.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleUpdateUser = this.handleUpdateUser.bind(this);
+		this.handleUpdateClient = this.handleUpdateClient.bind(this);
 
 	}
 
@@ -43,7 +43,7 @@ export default class UsersUpdate extends React.Component {
 	handleSubmit (e) {
 		e.preventDefault();
 		
-		fetch('/users/update', {
+		fetch('/client/update', {
 			method: 'POST',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
 			headers: new Headers({
@@ -59,26 +59,26 @@ export default class UsersUpdate extends React.Component {
 			updatePopularity: 0,
 			updateAge: 0,
 			updateID: '',
-			updatedUser: true
+			updatedClient: true
 		});
 
 	}
 
-	handleUpdateUser (e) {
+	handleUpdateClient (e) {
 		e.preventDefault();
 		this.setState({
-			updatedUser:false
+			updatedClient:false
 		});
 	}
 
 	render() {
-		if (this.state.updatedUser){
+		if (this.state.updatedClient){
 			return (
 				<div style={{maxWidth:'1200px', fontSize: '80%', margin:'2% auto'}}>
-					<h4>Updated User</h4>
+					<h4>Updated Client</h4>
 					<FormGroup row>
 						<Col sm={12}>
-							<Button onClick={this.handleUpdateUser} block>Update another</Button>
+							<Button onClick={this.handleUpdateClient} block>Update another</Button>
 						</Col>
 					</FormGroup>
 				</div>

@@ -17,7 +17,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // set up routes
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var clientsRouter = require('./routes/client');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/client', clientsRouter);
 
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname+'/client/build/index.html'));

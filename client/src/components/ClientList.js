@@ -7,21 +7,21 @@ import {
 	Table
 } from 'reactstrap';
 
-class UsersList extends React.Component{
+export default class ClientList extends React.Component{
 	constructor(props){
 		super(props);
 
 		this.state = {
-			users:[],
+			clients:[],
 			isLoading: true
 		};
 	}
 
 	componentDidMount(){
-		fetch('/users')
+		fetch('/client')
 			.then(res => res.json())
-			.then(users => this.setState({
-				users: users, 
+			.then(clients => this.setState({
+				clients: clients, 
 				isLoading: false
 			}));
 	}
@@ -42,13 +42,13 @@ class UsersList extends React.Component{
 							</tr>
 						</thead>
 						<tbody>
-							{this.state.users.map(user => 
-								<tr key={user._id}>
-									<td>{user.firstName}</td>
-									<td>{user.lastName}</td>
-									<td>{user.age}</td>
-									<td>{user.popularity}</td>
-									<td>{user._id}</td>
+							{this.state.clients.map(client => 
+								<tr key={client._id}>
+									<td>{client.firstName}</td>
+									<td>{client.lastName}</td>
+									<td>{client.age}</td>
+									<td>{client.popularity}</td>
+									<td>{client._id}</td>
 								</tr>
 							)}
 						</tbody>
@@ -59,5 +59,3 @@ class UsersList extends React.Component{
 	}
 
 }
-
-export default UsersList;

@@ -11,7 +11,7 @@ import {
 	FormText 
 } from 'reactstrap';
 
-export default class UsersCreate extends React.Component {
+export default class ClientCreate extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -20,7 +20,7 @@ export default class UsersCreate extends React.Component {
 			createLastName: '',
 			createPopularity: 0,
 			createAge: 0,
-			addedUser: false
+			addedClient: false
 		};
 
 		this.updateInput = this.updateInput.bind(this);
@@ -42,7 +42,7 @@ export default class UsersCreate extends React.Component {
 	handleSubmit (e) {
 		e.preventDefault();
 		
-		fetch('/users/create', {
+		fetch('/client/create', {
 			method: 'POST',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
 			headers: new Headers({
@@ -57,7 +57,7 @@ export default class UsersCreate extends React.Component {
 			createLastName: '',
 			createPopularity: 0,
 			createAge: 0,
-			addedUser: true
+			addedClient: true
 		});
 
 	}
@@ -65,15 +65,15 @@ export default class UsersCreate extends React.Component {
 	handleAddNew (e) {
 		e.preventDefault();
 		this.setState({
-			addedUser:false
+			addedClient:false
 		});
 	}
 
 	render() {
-		if (this.state.addedUser){
+		if (this.state.addedClient){
 			return (
 				<div style={{maxWidth:'1200px', fontSize: '80%', margin:'2% auto'}}>
-					<h4>Added User</h4>
+					<h4>Added Client</h4>
 					<FormGroup row>
 						<Col sm={12}>
 							<Button onClick={this.handleAddNew} block>Add another</Button>
