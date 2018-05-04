@@ -14,15 +14,20 @@ module.exports.createClient = function (req, res, next) {
 	var client = new Clients({
 		firstName: req.body.createFirstName,
 		lastName: req.body.createLastName,
-		popularity: req.body.createPopularity,
-		age: req.body.createAge
+		clientAddress: req.body.createClientAddr,
+		claimAddress: req.body.createClaimAddr,
+		city: req.body.createCity,
+		zip: req.body.createZip,
+		email: req.body.createEmail,
+		phone: req.body.createPhone,
+		priority: req.body.createPriority
 	});
 
 	client.save(function (err) {
 		if (err) {
 			return next(err);
 		} else {
-			console.log('Success...added client ' + req.body.firstName + ' ' + req.body.lastName);
+			console.log('Success...added client ' + req.body.createFirstName + ' ' + req.body.createLastName);
 		}
 	});
 };
@@ -39,15 +44,20 @@ module.exports.updateClient = function (req, res, next) {
 		$set: {
 			firstName: req.body.updateFirstName,
 			lastName: req.body.updateLastName,
-			popularity: req.body.updatePopularity,
-			age: req.body.updateAge
+			clientAddress: req.body.updateClientAddr,
+			claimAddress: req.body.updateClaimAddr,
+			city: req.body.updateCity,
+			zip: req.body.updateZip,
+			email: req.body.updateEmail,
+			phone: req.body.updatePhone,
+			priority: req.body.updatePriority
 		}
 	};
 	Clients.updateOne(query, update, function (err) {
 		if (err) {
 			return next(err);
 		} else {
-			console.log('Success...updated client.');
+			console.log('Success...updated client ' + req.body.createFirstName + ' ' + req.body.createLastName);
 		}
 	});
 };

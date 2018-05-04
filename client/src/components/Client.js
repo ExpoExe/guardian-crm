@@ -27,7 +27,6 @@ export default class Client extends React.Component{
 		return (
 			<Container fluid style={{maxWidth:'1200px', margin: '2% auto'}}>
 				<NavBar />
-				<h3>Gotta use the NavBar up there.</h3>
 			</Container>
 		);
 	}

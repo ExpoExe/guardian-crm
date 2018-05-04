@@ -18,8 +18,14 @@ export default class ClientCreate extends React.Component {
 		this.state = {
 			createFirstName: '',
 			createLastName: '',
-			createPopularity: 0,
-			createAge: 0,
+			createClientAddr: '',
+			createClaimAddr: '',
+			createCity: '',
+			createZip: '',
+			createEmail: '',
+			createEmailConfirm: '',
+			createPhone: '',
+			createPriority: '!',
 			addedClient: false
 		};
 
@@ -30,7 +36,13 @@ export default class ClientCreate extends React.Component {
 	}
 
 	validateForm() {
-		return this.state.createFirstName.length > 0 && this.state.createLastName.length > 0;
+		if (this.state.createPhone.length > 0 
+			&& this.state.createLastName.length > 0
+			&& this.state.createEmail == this.state.createEmailConfirm){
+				return true;
+			} else {
+				return false;
+			}
 	}
 
 	updateInput (e) {
@@ -55,8 +67,14 @@ export default class ClientCreate extends React.Component {
 		this.setState({
 			createFirstName: '',
 			createLastName: '',
-			createPopularity: 0,
-			createAge: 0,
+			createClientAddr: '',
+			createClaimAddr: '',
+			createCity: '',
+			createZip: '',
+			createEmail: '',
+			createEmailConfirm: '',
+			createPhone: '',
+			createPriority: '!',
 			addedClient: true
 		});
 
@@ -89,7 +107,7 @@ export default class ClientCreate extends React.Component {
 						<FormGroup row>
 							<Label for="createFirstName" sm={4}>First Name</Label>
 							<Col sm={8}>
-								<Input required onChange={this.updateInput} value={this.state.createFirstName} type="text" name="createFirstName" id="createFirstName" />
+								<Input onChange={this.updateInput} value={this.state.createFirstName} type="text" name="createFirstName" id="createFirstName" />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
@@ -99,15 +117,55 @@ export default class ClientCreate extends React.Component {
 							</Col>
 						</FormGroup>
 						<FormGroup row>
-							<Label for="createPopularity" sm={4}>Popularity</Label>
+							<Label for="createClientAddr" sm={4}>Client Full Address</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state.createPopularity} type="number" name="createPopularity" id="createPopularity"  />
+								<Input onChange={this.updateInput} value={this.state.createClientAddr} type="text" name="createClientAddr" id="createClientAddr"  />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
-							<Label for="createAge" sm={4}>Age</Label>
+							<Label for="createClaimAddr" sm={4}>Claim Street Address</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state.createAge} type="number" name="createAge" id="createAge"  />
+								<Input onChange={this.updateInput} value={this.state.createClaimAddr} type="text" name="createClaimAddr" id="createClaimAddr"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="createCity" sm={4}>Claim City</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.createCity} type="text" name="createCity" id="createCity"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="createZip" sm={4}>Claim Zipcode</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.createZip} type="text" name="createZip" id="createZip"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="createPhone" sm={4}>Phone Number</Label>
+							<Col sm={8}>
+								<Input required onChange={this.updateInput} value={this.state.createPhone} type="number" name="createPhone" id="createPhone"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="createEmail" sm={4}>Email</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.createEmail} type="email" name="createEmail" id="createEmail"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="createEmailConfirm" sm={4}>Confirm Email</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.createEmailConfirm} type="email" name="createEmailConfirm" id="createEmailConfirm"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="updatePriority" sm={4}>Priority</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.updatePriority} type="select" name="updatePriority" id="updatePriority">
+									<option value='!'>Low</option>
+									<option value='!!'>Medium</option>
+									<option value='!!!'>High</option>
+								</Input>
 							</Col>
 						</FormGroup>
 						<FormGroup row>

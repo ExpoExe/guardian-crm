@@ -18,8 +18,14 @@ export default class ClientUpdate extends React.Component {
 		this.state = {
 			updateFirstName: '',
 			updateLastName: '',
-			updatePopularity: 0,
-			updateAge: 0,
+			updateClientAddr: '',
+			updateClaimAddr: '',
+			updateCity: '',
+			updateZip: '',
+			updateEmail: '',
+			updateEmailConfirm: '',
+			updatePhone: '',
+			updatePriority: '!',
 			updateID: '',
 			updatedClient: false
 		};
@@ -31,7 +37,7 @@ export default class ClientUpdate extends React.Component {
 	}
 
 	validateForm() {
-		return this.state.updateFirstName.length > 0 && this.state.updateID.length > 0;
+		return this.state.updateID.length > 0;
 	}
 
 	updateInput (e) {
@@ -56,8 +62,14 @@ export default class ClientUpdate extends React.Component {
 		this.setState({
 			updateFirstName: '',
 			updateLastName: '',
-			updatePopularity: 0,
-			updateAge: 0,
+			updateClientAddr: '',
+			updateClaimAddr: '',
+			updateCity: '',
+			updateZip: '',
+			updateEmail: '',
+			updateEmailConfirm: '',
+			updatePhone: '',
+			updatePriority: '!',
 			updateID: '',
 			updatedClient: true
 		});
@@ -91,31 +103,65 @@ export default class ClientUpdate extends React.Component {
 						<FormGroup row>
 							<Label for="updateFirstName" sm={4}>First Name</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state.firstName} type="text" name="updateFirstName" id="updateFirstName" />
+								<Input onChange={this.updateInput} value={this.state.updateFirstName} type="text" name="updateFirstName" id="updateFirstName" />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
 							<Label for="updateLastName" sm={4}>Last Name</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state.lastName} type="text" name="updateLastName" id="updateLastName"  />
+								<Input onChange={this.updateInput} value={this.state.updateLastName} type="text" name="updateLastName" id="updateLastName"  />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
-							<Label for="updatePopularity" sm={4}>Popularity</Label>
+							<Label for="updateClientAddr" sm={4}>Client Full Address</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state.popularity} type="number" name="updatePopularity" id="updatePopularity"  />
+								<Input onChange={this.updateInput} value={this.state.updateClientAddr} type="text" name="updateClientAddr" id="updateClientAddr"  />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
-							<Label for="updateAge" sm={4}>Age</Label>
+							<Label for="updateClaimAddr" sm={4}>Claim Street Address</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state.age} type="number" name="updateAge" id="updateAge"  />
+								<Input onChange={this.updateInput} value={this.state.updateClaimAddr} type="text" name="updateClaimAddr" id="updateClaimAddr"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="updateCity" sm={4}>Claim City</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.updateCity} type="text" name="updateCity" id="updateCity"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="updateZip" sm={4}>Claim Zipcode</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.updateZip} type="text" name="updateZip" id="updateZip"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="updatePhone" sm={4}>Phone Number</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.updatePhone} type="number" name="updatePhone" id="updatePhone"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="updateEmail" sm={4}>Email</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.updateEmail} type="email" name="updateEmail" id="updateEmail"  />
+							</Col>
+						</FormGroup>
+						<FormGroup row>
+							<Label for="updatePriority" sm={4}>Priority</Label>
+							<Col sm={8}>
+								<Input onChange={this.updateInput} value={this.state.updatePriority} type="select" name="updatePriority" id="updatePriority">
+									<option value='!'>Low</option>
+									<option value='!!'>Medium</option>
+									<option value='!!!'>High</option>
+								</Input>
 							</Col>
 						</FormGroup>
 						<FormGroup row>
 							<Label for="updateID" sm={4}>ID</Label>
 							<Col sm={8}>
-								<Input onChange={this.updateInput} value={this.state._id} type="text" name="updateID" id="updateID"  />
+								<Input required onChange={this.updateInput} value={this.state._id} type="text" name="updateID" id="updateID"  />
 							</Col>
 						</FormGroup>
 						<FormGroup row>
