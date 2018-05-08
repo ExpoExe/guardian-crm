@@ -57,7 +57,7 @@ module.exports.updateClient = function (req, res, next) {
 		if (err) {
 			return next(err);
 		} else {
-			console.log('Success...updated client ' + req.body.createFirstName + ' ' + req.body.createLastName);
+			console.log('Success...updated client ' + req.body.updateFirstName + ' ' + req.body.updateLastName);
 		}
 	});
 };

@@ -1,14 +1,11 @@
-import React from 'react'; // eslint-disable-line no-unused-vars
-import { Redirect } from 'react-router-dom'; // eslint-disable-line no-unused-vars
+import React from 'react';
 import { 
-	Container, 
 	Col, 
 	Button, 
 	Form, 
 	FormGroup, 
 	Label, 
-	Input, 
-	FormText 
+	Input
 } from 'reactstrap';
 
 export default class ClientCreate extends React.Component {
@@ -38,7 +35,7 @@ export default class ClientCreate extends React.Component {
 	validateForm() {
 		if (this.state.createPhone.length > 0 
 			&& this.state.createLastName.length > 0
-			&& this.state.createEmail == this.state.createEmailConfirm){
+			&& this.state.createEmail === this.state.createEmailConfirm){
 				return true;
 			} else {
 				return false;

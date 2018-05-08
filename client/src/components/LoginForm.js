@@ -1,8 +1,8 @@
-import React from 'react'; // eslint-disable-line no-unused-vars
-import { Redirect } from 'react-router-dom'; // eslint-disable-line no-unused-vars
-import { Container, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap'; // eslint-disable-line no-unused-vars
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { Container, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
-export default class Login extends React.Component {
+export default class LoginForm extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -27,8 +27,7 @@ export default class Login extends React.Component {
 		});
 	}
 
-	handleLogin (e) {
-		e.preventDefault();
+	handleLogin(e){
 		this.setState({
 			loggedIn: true
 		});
@@ -39,28 +38,26 @@ export default class Login extends React.Component {
 			return(
 				<Redirect to='/client' />
 			);
-		} else {
-				
+		} else {	
 			return (
-				<div style={{maxWidth: '600px', margin: '20% auto 0 auto'}}>
+				<div>
 					<Container fluid>
-						<h2>CRM</h2>
 						<Form onSubmit={this.handleLogin}>
 							<FormGroup row>
 								<Label for="loginUsername" sm={2}>Username</Label>
 								<Col sm={10}>
-									<Input onChange={this.updateInput} value={this.state.loginUsername} type="text" name="username" id="loginUsername" />
+									<Input onChange={this.updateInput} value={this.state.loginUsername} type="text" name="loginUsername" id="loginUsername" />
 								</Col>
 							</FormGroup>
 							<FormGroup row>
 								<Label for="loginPassword" sm={2}>Password</Label>
 								<Col sm={10}>
-									<Input onChange={this.updateInput} value={this.state.loginPassword} type="password" name="password" id="loginPassword"  />
+									<Input onChange={this.updateInput} value={this.state.loginPassword} type="password" name="loginPassword" id="loginPassword"  />
 								</Col>
 							</FormGroup>
 							<FormGroup row>
 								<Col sm={12}>
-									<Button disabled={!this.validateForm()} block>Login</Button>
+									<Button color='info' disabled={!this.validateForm()} block>Login</Button>
 								</Col>
 							</FormGroup>
 						</Form>

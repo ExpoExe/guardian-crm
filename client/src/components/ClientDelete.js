@@ -1,14 +1,11 @@
-import React from 'react'; // eslint-disable-line no-unused-vars
-import { Redirect } from 'react-router-dom'; // eslint-disable-line no-unused-vars
+import React from 'react';
 import { 
-	Container, 
 	Col, 
 	Button, 
 	Form, 
 	FormGroup, 
 	Label, 
-	Input, 
-	FormText 
+	Input
 } from 'reactstrap';
 
 export default class ClientDelete extends React.Component {

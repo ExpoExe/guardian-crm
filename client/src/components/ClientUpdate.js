@@ -1,14 +1,12 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import { Redirect } from 'react-router-dom'; // eslint-disable-line no-unused-vars
 import { 
-	Container, 
 	Col, 
 	Button, 
 	Form, 
 	FormGroup, 
 	Label, 
-	Input, 
-	FormText 
+	Input
 } from 'reactstrap';
 
 export default class ClientUpdate extends React.Component {

@@ -1,11 +1,6 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
 import Loading from './Loading'; // eslint-disable-line no-unused-vars
-import { 
-	Container, 
-	Col, 
-	Button, 
-	Table
-} from 'reactstrap';
+import { Table } from 'reactstrap';
 
 export default class ClientList extends React.Component{
 	constructor(props){
@@ -18,7 +13,7 @@ export default class ClientList extends React.Component{
 	}
 
 	componentDidMount(){
-		fetch('/client')
+		fetch('/client/list')
 			.then(res => res.json())
 			.then(clients => this.setState({
 				clients: clients, 

@@ -13,7 +13,7 @@ import {
 	Redirect
 } from 'react-router-dom';
 
-export default class NavBar extends React.Component {
+export default class ClientNavBar extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -42,12 +42,12 @@ export default class NavBar extends React.Component {
 
 	render() {
 		if (!this.state.loggedIn){
-			return <Redirect to='/' />;
+			return <Redirect to='/login' />;
 		} else {
 			return (
 				<div>
 					<Navbar color="light" light expand="md">
-						<NavbarBrand tag={Link} to="/client">CRM</NavbarBrand>
+						<NavbarBrand tag={Link} to="/client">Client Area</NavbarBrand>
 						<NavbarToggler onClick={this.toggleNavbar} />
 						<Collapse isOpen={this.state.isOpen} navbar>
 							<Nav className="ml-auto" navbar>

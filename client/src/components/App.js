@@ -1,11 +1,13 @@
-import React from 'react'; // eslint-disable-line no-unused-vars
-import Login from './Login';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import LoginPage from './LoginPage';
+import LoginForm from './LoginForm';
+import RegistrationForm from './RegistrationForm';
 import Client from './Client';
-import { BrowserRouter as Router, Route } from 'react-router-dom'; // eslint-disable-line no-unused-vars
-import ClientCreate from './ClientCreate'; // eslint-disable-line no-unused-vars
-import ClientList from './ClientList'; // eslint-disable-line no-unused-vars
-import ClientDelete from './ClientDelete'; // eslint-disable-line no-unused-vars
-import ClientUpdate from './ClientUpdate'; // eslint-disable-line no-unused-vars
+import ClientCreate from './ClientCreate';
+import ClientList from './ClientList';
+import ClientDelete from './ClientDelete';
+import ClientUpdate from './ClientUpdate';
 
 class App extends React.Component {
 
@@ -13,7 +15,9 @@ class App extends React.Component {
 		return (
 			<Router>
 				<div>
-					<Route exact path='/' component={Login} />
+					<Route path='/' component={LoginPage} />
+					<Route path='/login' component={LoginForm} />
+					<Route path='/registration' component={RegistrationForm} />
 					<Route path='/client' component={Client} />
 					<Route path='/client/list' component={ClientList} />
 					<Route path='/client/create' component={ClientCreate} />
