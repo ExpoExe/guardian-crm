@@ -12,7 +12,7 @@ export default class LoginPage extends React.Component {
 				<Container fluid>
 					<h1>Welcome to the CRM</h1>
 					<Link to='/login'>Login</Link>| 
-					<Link to='/registration'>Register</Link>
+					<Link to='/register'>Register</Link>
 				</Container>
 			</div>
 		);

@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { Container, Col, Button, Form, FormGroup, Label, Input, Alert } from 'reactstrap';
+import { Container, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import CustomAlertBox from './CustomAlertBox';
 
 export default class RegistrationForm extends React.Component {
@@ -40,6 +40,17 @@ export default class RegistrationForm extends React.Component {
 		e.preventDefault();
 		const self = this;
 
+		this.setState({
+			errors: {
+				firstName: null,
+				lastName: null,
+				username: null,
+				email: null,
+				password: null,
+				confirmPassword: null,
+			},
+		});
+
 		fetch('/staff/register', {
 			method: 'POST',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
@@ -47,7 +58,7 @@ export default class RegistrationForm extends React.Component {
 				'Content-Type': 'application/json'
 			})
 		}).then(res => res.json())
-			.catch(failure => console.error('Request Failure:', failure))
+			.catch(err => console.error('Request Failure:', err))
 			.then(function(res) {
 
 				if (res.ok){
@@ -58,17 +69,9 @@ export default class RegistrationForm extends React.Component {
 						email: '',
 						password: '',
 						confirmPassword: '',
-						errors: {
-							firstName: null,
-							lastName: null,
-							username: null,
-							email: null,
-							password: null,
-							confirmPassword: null,
-						},
 						addedStaff: true
 					});
-					
+
 				} else {
 					
 					if (res.duplicated){

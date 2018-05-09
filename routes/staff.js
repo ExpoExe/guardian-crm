@@ -81,14 +81,14 @@ function createValidationFor(form) {
 
 function checkValidationResult(req, res, next) {
 
+	req.session.validated = false;
 	//dont really need formatter here because the data is nice with result.mapped(), but for future use
 	const errorFormatter = ({ location, msg, param }) => {
 		return `${msg}`;
 	 };
 	 const result = validationResult(req).formatWith(errorFormatter);
 	 if (!result.isEmpty()) {
-		req.session.errors = result.mapped();
-		req.session.validated = false;
+		req.body.errors = result.mapped();
 		return next();
 	 } else {
 		req.session.validated = true;

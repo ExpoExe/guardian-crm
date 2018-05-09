@@ -1,6 +1,7 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import { Container, Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import CustomAlertBox from './CustomAlertBox';
 
 export default class LoginForm extends React.Component {
 	constructor(props) {
@@ -10,19 +11,17 @@ export default class LoginForm extends React.Component {
 			username: '',
 			password: '',
 			errors: {
-				usernameError: null,
-				passwordError: null
+				username: null,
+				password: null
 			},
+			notFoundErr: false,
+			badPasswordErr: false,
 			loggedIn: false
 		};
 
 		this.updateInput = this.updateInput.bind(this);
 		this.handleLogin = this.handleLogin.bind(this);
 
-	}
-
-	validateForm() {
-		return this.state.username.length > 0 && this.state.password.length > 0;
 	}
 
 	updateInput (e) {
@@ -36,6 +35,13 @@ export default class LoginForm extends React.Component {
 		e.preventDefault();
 		const self = this;
 
+		this.setState({
+			errors: {
+				username: null,
+				password: null,
+			},
+		});
+
 		fetch('/staff/login', {
 			method: 'POST',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
@@ -43,19 +49,17 @@ export default class LoginForm extends React.Component {
 				'Content-Type': 'application/json'
 			})
 		}).then(res => res.json())
-			.catch(failure => console.error('Request Failure:', failure))
+			.catch(err => console.error('Request Failure:', err))
 			.then(function(res) {
 				if (res.ok){
 					self.setState({
 						username: '',
 						password: '',
-						errors: {
-							username: null,
-							password: null,
-						},
 						loggedIn: true
 					});
 				} else {
+					if (res.notFound){ self.setState({ notFoundErr: true }); }
+					if (res.badPassword){ self.setState({ badPasswordErr: true }); }
 					self.setState({
 						errors: {
 							username: res.username,
@@ -85,18 +89,22 @@ export default class LoginForm extends React.Component {
 									<Input onChange={this.updateInput} value={this.state.username} type="text" name="username" id="username" />
 								</Col>
 							</FormGroup>
+							<CustomAlertBox type='warning' message={this.state.errors.username} active={(this.state.errors.username != null)} />
 							<FormGroup row>
 								<Label for="password" sm={2}>Password</Label>
 								<Col sm={10}>
-									<Input onChange={this.updateInput} value={this.state.password} type="password" name="password" id="password"  />
+									<Input onChange={this.updateInput} value={this.state.password} type="password" name="password" id="password" />
 								</Col>
 							</FormGroup>
+							<CustomAlertBox type='warning' message={this.state.errors.password} active={(this.state.errors.password != null)} />
 							<FormGroup row>
 								<Col sm={12}>
-									<Button color='info' disabled={!this.validateForm()} block>Login</Button>
+									<Button color='info' block>Login</Button>
 								</Col>
 							</FormGroup>
 						</Form>
+						<CustomAlertBox type='danger' message='Account with that username not found' active={this.state.notFoundErr} />
+						<CustomAlertBox type='danger' message='Wrong password' active={this.state.badPasswordErr} />
 					</Container>
 				</div>
 			);

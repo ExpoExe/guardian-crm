@@ -17,7 +17,7 @@ class App extends React.Component {
 				<div>
 					<Route path='/' component={LoginPage} />
 					<Route path='/login' component={LoginForm} />
-					<Route path='/registration' component={RegistrationForm} />
+					<Route path='/register' component={RegistrationForm} />
 					<Route path='/client' component={Client} />
 					<Route path='/client/list' component={ClientList} />
 					<Route path='/client/create' component={ClientCreate} />

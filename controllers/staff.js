@@ -3,20 +3,42 @@ var assert = require('assert');
 const { validationResult } = require('express-validator/check');
 var bcrypt = require('bcrypt');
 
-module.exports.getAllStaff = function (cb) {
-	Staff.find({}, function (err, staff) {
-		assert.equal(null, err);
-		cb(staff);
-	});
-};
-
 module.exports.staffLogin = function(req, res, next) {
-	//find correcty here
-	/*
-	Staff.find({}, function (err, staff) {
-		assert.equal(null, err);
-		cb(staff);
-	});*/
+
+	if (req.session.validated){
+
+		Staff.findOne({username: req.body.username}, function(err, staffUserInfo){
+			if(err){
+				console.log(err);
+				res.status(400).send({ok: false});
+			} else {
+				if (staffUserInfo == null){
+					console.log('Account not found!');
+					res.status(404).send({ok: false, notFound: true});
+				} else {
+					console.log('Account found!');
+					bcrypt.compare(req.body.password, staffUserInfo.password).then(function(result){
+						if (result){
+							console.log('Logging in user', staffUserInfo.username);
+							res.status(201).send({ok: true});
+						} else {
+							res.status(401).send({ok: false, badPassword: true});
+						}
+					})
+					//set req.sessionID to _id
+					//figure out how to restrict all pages except login
+
+				}
+			}
+		});
+
+
+	} else {
+		res.status(422).send(req.body.errors);
+		console.log('Failed to login because:');
+		console.log(req.body.errors);
+	}
+
 }
 
 module.exports.registerStaff = function (req, res, next) {
@@ -25,7 +47,7 @@ module.exports.registerStaff = function (req, res, next) {
 
 		bcrypt.hash(req.body.password, 8).then(function(hash) {
 			
-			var staff = new Staff({
+			let staff = new Staff({
 				firstName: req.body.firstName,
 				lastName: req.body.lastName,
 				username: req.body.username,
@@ -35,7 +57,7 @@ module.exports.registerStaff = function (req, res, next) {
 		
 			staff.save(function (err) {
 				if (err) {
-					//Schema validation took place here, checking for duplicate username or email
+					//Mongoose validation took place here, checking for duplicate username or email
 					res.status(422).send({ok: false, duplicated: true});
 					console.log(err);
 				} else {
@@ -47,11 +69,18 @@ module.exports.registerStaff = function (req, res, next) {
 	  	});
 
 	} else {
-		res.status(422).send(req.session.errors);
+		res.status(422).send(req.body.errors);
 		console.log('Failed to add staff because:');
-		console.log(req.session.errors);
+		console.log(req.body.errors);
 	}
 
+};
+
+module.exports.getAllStaff = function (cb) {
+	Staff.find({}, function (err, staff) {
+		assert.equal(null, err);
+		cb(staff);
+	});
 };
 
 module.exports.updateStaff = function (req, res, next) {
@@ -61,8 +90,8 @@ module.exports.updateStaff = function (req, res, next) {
 		return;
 	}
 
-	var query = { '_id': req.body.updateID };
-	var update = {
+	let query = { '_id': req.body.updateID };
+	let update = {
 		$set: {
 			firstName: req.body.updateFirstName,
 			lastName: req.body.updateLastName,
