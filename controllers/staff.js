@@ -10,9 +10,18 @@ module.exports.getAllStaff = function (cb) {
 	});
 };
 
+module.exports.staffLogin = function(req, res, next) {
+	//find correcty here
+	/*
+	Staff.find({}, function (err, staff) {
+		assert.equal(null, err);
+		cb(staff);
+	});*/
+}
+
 module.exports.registerStaff = function (req, res, next) {
 
-	if (req.session.success){
+	if (req.session.validated){
 
 		bcrypt.hash(req.body.password, 8).then(function(hash) {
 			
@@ -26,8 +35,11 @@ module.exports.registerStaff = function (req, res, next) {
 		
 			staff.save(function (err) {
 				if (err) {
-					return next(err);
+					//Schema validation took place here, checking for duplicate username or email
+					res.status(422).send({ok: false, duplicated: true});
+					console.log(err);
 				} else {
+					res.status(201).send({ok: true});
 					console.log('Success...added staff ' + req.body.firstName + ' ' + req.body.lastName);
 				}
 			});
@@ -35,6 +47,7 @@ module.exports.registerStaff = function (req, res, next) {
 	  	});
 
 	} else {
+		res.status(422).send(req.session.errors);
 		console.log('Failed to add staff because:');
 		console.log(req.session.errors);
 	}

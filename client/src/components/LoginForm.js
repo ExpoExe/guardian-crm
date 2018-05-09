@@ -7,8 +7,12 @@ export default class LoginForm extends React.Component {
 		super(props);
 
 		this.state = {
-			loginUsername: '',
-			loginPassword: '',
+			username: '',
+			password: '',
+			errors: {
+				usernameError: null,
+				passwordError: null
+			},
 			loggedIn: false
 		};
 
@@ -18,7 +22,7 @@ export default class LoginForm extends React.Component {
 	}
 
 	validateForm() {
-		return this.state.loginUsername.length > 0 && this.state.loginPassword.length > 0;
+		return this.state.username.length > 0 && this.state.password.length > 0;
 	}
 
 	updateInput (e) {
@@ -28,9 +32,41 @@ export default class LoginForm extends React.Component {
 	}
 
 	handleLogin(e){
-		this.setState({
-			loggedIn: true
-		});
+
+		e.preventDefault();
+		const self = this;
+
+		fetch('/staff/login', {
+			method: 'POST',
+			body: JSON.stringify(this.state), // data can be `string` or {object}!
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		}).then(res => res.json())
+			.catch(failure => console.error('Request Failure:', failure))
+			.then(function(res) {
+				if (res.ok){
+					self.setState({
+						username: '',
+						password: '',
+						errors: {
+							username: null,
+							password: null,
+						},
+						loggedIn: true
+					});
+				} else {
+					self.setState({
+						errors: {
+							username: res.username,
+							password: res.password,
+						}
+					});
+					if (self.state.errors.username != null){self.setState({username: ''});}
+					if (self.state.errors.password != null){self.setState({password: ''});}
+				}
+
+			});
 	}
 
 	render() {
@@ -44,15 +80,15 @@ export default class LoginForm extends React.Component {
 					<Container fluid>
 						<Form onSubmit={this.handleLogin}>
 							<FormGroup row>
-								<Label for="loginUsername" sm={2}>Username</Label>
+								<Label for="username" sm={2}>Username</Label>
 								<Col sm={10}>
-									<Input onChange={this.updateInput} value={this.state.loginUsername} type="text" name="loginUsername" id="loginUsername" />
+									<Input onChange={this.updateInput} value={this.state.username} type="text" name="username" id="username" />
 								</Col>
 							</FormGroup>
 							<FormGroup row>
-								<Label for="loginPassword" sm={2}>Password</Label>
+								<Label for="password" sm={2}>Password</Label>
 								<Col sm={10}>
-									<Input onChange={this.updateInput} value={this.state.loginPassword} type="password" name="loginPassword" id="loginPassword"  />
+									<Input onChange={this.updateInput} value={this.state.password} type="password" name="password" id="password"  />
 								</Col>
 							</FormGroup>
 							<FormGroup row>

@@ -1,10 +1,7 @@
-import React from 'react'; 
-import { Alert } from 'reactstrap'; 
+import React from 'react';
+import { Alert } from 'reactstrap';
 
 export default class CustomAlertBox extends React.Component {
-	constructor(props) {
-		super(props);
-	}
 
 	render(){
 		if (this.props.active){

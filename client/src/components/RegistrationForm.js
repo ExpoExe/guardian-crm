@@ -21,6 +21,7 @@ export default class RegistrationForm extends React.Component {
 				password: null,
 				confirmPassword: null,
 			},
+			duplicateStaffErr: false,
 			addedStaff: false
 		};
 
@@ -48,6 +49,7 @@ export default class RegistrationForm extends React.Component {
 		}).then(res => res.json())
 			.catch(failure => console.error('Request Failure:', failure))
 			.then(function(res) {
+
 				if (res.ok){
 					self.setState({
 						firstName: '',
@@ -66,26 +68,30 @@ export default class RegistrationForm extends React.Component {
 						},
 						addedStaff: true
 					});
+					
 				} else {
-					self.setState({
-						errors: {
-							firstName: res.firstName,
-							lastName: res.lastName,
-							username: res.username,
-							email: res.email,
-							password: res.password,
-							confirmPassword: res.confirmPassword,
-						}
-					});
-					if (self.state.errors.firstName != null){self.setState({firstName: ''})}
-					if (self.state.errors.lastName != null){self.setState({lastName: ''})}
-					if (self.state.errors.username != null){self.setState({username: ''})}
-					if (self.state.errors.email != null){self.setState({email: ''})}
-					if (self.state.errors.password != null){self.setState({password: '', confirmPassword: ''})}
+					
+					if (res.duplicated){
+						self.setState({duplicateStaffErr: true});
+					} else {
+						self.setState({
+							errors: {
+								firstName: res.firstName,
+								lastName: res.lastName,
+								username: res.username,
+								email: res.email,
+								password: res.password,
+								confirmPassword: res.confirmPassword,
+							}
+						});
+						if (self.state.errors.firstName != null){self.setState({firstName: ''});}
+						if (self.state.errors.lastName != null){self.setState({lastName: ''});}
+						if (self.state.errors.username != null){self.setState({username: ''});}
+						if (self.state.errors.email != null){self.setState({email: ''});}
+						if (self.state.errors.password != null){self.setState({password: '', confirmPassword: ''});}
+					}
 				}
-
 			});
-
 	}
 
 	render() {
@@ -100,42 +106,42 @@ export default class RegistrationForm extends React.Component {
 								<Input required onChange={this.updateInput} value={this.state.firstName} type="text" name="firstName" id="firstName" />
 							</Col>
 						</FormGroup>
-						<CustomAlertBox type='danger' message={this.state.errors.firstName} active={(this.state.errors.firstName != null)} />
+						<CustomAlertBox type='warning' message={this.state.errors.firstName} active={(this.state.errors.firstName != null)} />
 						<FormGroup row>
 							<Label for="lastName" sm={2}>Last Name</Label>
 							<Col sm={10}>
 								<Input required onChange={this.updateInput} value={this.state.lastName} type="text" name="lastName" id="lastName" />
 							</Col>
 						</FormGroup>
-						<CustomAlertBox type='danger' message={this.state.errors.lastName} active={(this.state.errors.lastName != null)} />
+						<CustomAlertBox type='warning' message={this.state.errors.lastName} active={(this.state.errors.lastName != null)} />
 						<FormGroup row>
 							<Label for="username" sm={2}>Username</Label>
 							<Col sm={10}>
 								<Input required onChange={this.updateInput} value={this.state.username} type="text" name="username" id="username" />
 							</Col>
 						</FormGroup>
-						<CustomAlertBox type='danger' message={this.state.errors.username} active={(this.state.errors.username != null)} />
+						<CustomAlertBox type='warning' message={this.state.errors.username} active={(this.state.errors.username != null)} />
 						<FormGroup row>
 							<Label for="email" sm={2}>Email</Label>
 							<Col sm={10}>
 								<Input required onChange={this.updateInput} value={this.state.email} type="email" name="email" id="email" />
 							</Col>
 						</FormGroup>
-						<CustomAlertBox type='danger' message={this.state.errors.email} active={(this.state.errors.email != null)} />
+						<CustomAlertBox type='warning' message={this.state.errors.email} active={(this.state.errors.email != null)} />
 						<FormGroup row>
 							<Label for="password" sm={2}>Password</Label>
 							<Col sm={10}>
 								<Input required onChange={this.updateInput} value={this.state.password} type="password" name="password" id="password" />
 							</Col>
 						</FormGroup>
-						<CustomAlertBox type='danger' message={this.state.errors.password} active={(this.state.errors.password != null)} />
+						<CustomAlertBox type='warning' message={this.state.errors.password} active={(this.state.errors.password != null)} />
 						<FormGroup row>
 							<Label for="confirmPassword" sm={2}>Confirm Password</Label>
 							<Col sm={10}>
 								<Input required onChange={this.updateInput} value={this.state.confirmPassword} type="password" name="confirmPassword" id="confirmPassword"  />
 							</Col>
 						</FormGroup>
-						<CustomAlertBox type='danger' message={this.state.errors.confirmPassword} active={(this.state.errors.confirmPassword != null)} />
+						<CustomAlertBox type='warning' message={this.state.errors.confirmPassword} active={(this.state.errors.confirmPassword != null)} />
 						<FormGroup row>
 							<Col sm={12}>
 								<Button color='info' block>Register</Button>
@@ -143,6 +149,7 @@ export default class RegistrationForm extends React.Component {
 						</FormGroup>
 					</Form>		
 					<CustomAlertBox type='success' message='Successfully added staff user!' active={this.state.addedStaff} />
+					<CustomAlertBox type='danger' message='Username or Email already exists!' active={this.state.duplicateStaffErr} />
 				</Container>
 			</div>
 		);
