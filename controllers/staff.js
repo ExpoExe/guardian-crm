@@ -5,7 +5,7 @@ var bcrypt = require('bcrypt');
 
 module.exports.staffLogin = function(req, res, next) {
 
-	if (req.session.validated){
+	if (req.body.validated){
 
 		Staff.findOne({username: req.body.username}, function(err, staffUserInfo){
 			if(err){
@@ -19,13 +19,22 @@ module.exports.staffLogin = function(req, res, next) {
 					console.log('Account found!');
 					bcrypt.compare(req.body.password, staffUserInfo.password).then(function(result){
 						if (result){
-							console.log('Logging in user', staffUserInfo.username);
-							res.status(201).send({ok: true});
+							Staff.findByIdAndUpdate(staffUserInfo._id, { $set: { lastLoggedOn: (new Date) }}, function(err){
+								if(err){
+									console.log(err);
+									res.status(400).send({ok: false});
+								} else {
+									console.log('Logging in user', staffUserInfo.username);
+									console.log(req.session);
+									res.status(201).send({ok: true});
+								}
+							});
 						} else {
 							res.status(401).send({ok: false, badPassword: true});
 						}
 					})
 					//set req.sessionID to _id
+					//store session data in cookie or redis?
 					//figure out how to restrict all pages except login
 
 				}
