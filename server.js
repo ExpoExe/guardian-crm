@@ -1,14 +1,16 @@
-var path = require('path');
-var createError = require('http-errors');
-var express = require('express');
-var session = require('express-session');
-var passport = require('passport');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-var mongoose = require('mongoose');
+var path = require('path'),
+	createError = require('http-errors'),
+	express = require('express'),
+	session = require('express-session'),
+	flash = require('connect-flash'),
+	passport = require('passport'),
+	bodyParser = require('body-parser'),
+	logger = require('morgan'),
+	mongoose = require('mongoose'),
+	RedisStore = require('connect-redis')(session),
+	redis = require('redis').createClient();
 
-
+require('./strategies/localStrategy')(passport);
 var app = express();
 
 // Set up mongoose connection
@@ -19,20 +21,28 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // set up routes
-var indexRouter = require('./routes/index');
 var clientsRouter = require('./routes/client');
 var staffRouter = require('./routes/staff');
+var authRouter = require('./routes/auth');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(cookieParser());
-app.use(session({secret: 'dev', saveUninitialized: false, resave: false}));
+app.use(session({
+	secret: 'yellow!@#$bread', 
+	saveUninitialized: false, 
+	resave: false,
+	cookie: {secure: false},
+	store: new RedisStore({ host: 'localhost', port: 6379, client: redis, prefix: 'session:' })
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.use('/', indexRouter);
+app.use('/auth', authRouter);
 app.use('/client', clientsRouter);
 app.use('/staff', staffRouter);
 

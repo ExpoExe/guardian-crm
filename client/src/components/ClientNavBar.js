@@ -17,12 +17,12 @@ export default class ClientNavBar extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.toggleNavbar = this.toggleNavbar.bind(this);
 		this.state = {
 			isOpen: false,
 			loggedIn: true
 		};
-
+		
+		this.toggleNavbar = this.toggleNavbar.bind(this);
 		this.handleLogout = this.handleLogout.bind(this);
 
 	}
@@ -35,9 +35,22 @@ export default class ClientNavBar extends React.Component {
 
 	handleLogout (e) {
 		e.preventDefault();
-		this.setState({
-			loggedIn: false
-		});
+
+		let self = this;
+		// TODO make logout work
+		fetch('/staff/logout', {
+			method: 'POST',
+			body: JSON.stringify(this.state), // data can be `string` or {object}!
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		}).then(res => res.json())
+			.catch(err => console.error('Request Failure:', err))
+			.then(function(res) {
+				self.setState({
+					loggedIn: false
+				});
+			});
 	}
 
 	render() {

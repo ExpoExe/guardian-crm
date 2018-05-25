@@ -32,7 +32,7 @@ module.exports.createValidationFor = function(form) {
 
 		case 'login':
 			  return [
-				sanitize(['username', 'lastName', 'username'])
+				sanitize(['username', 'password'])
 					.trim(),
 				check('username')
 					.exists().withMessage('Username required.')

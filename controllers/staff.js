@@ -1,48 +1,48 @@
 var Staff = require('../models/staff');
 var assert = require('assert');
-const { validationResult } = require('express-validator/check');
 var bcrypt = require('bcrypt');
+var passport = require('passport');
+
+//implement forgot password thingy	
+
+module.exports.staffLogout = function(req, res, next) {
+	if(res.isAuth) {
+		console.log('Logging out:', req.user);
+		req.logout();
+	} else {
+		console.log('Oh...could not log out...');
+	}
+}
 
 module.exports.staffLogin = function(req, res, next) {
-
+	//check if passed validation
 	if (req.body.validated){
+		//check if express-brute stopped someone
+		if (req.body.errors.tooManyAttempts){
+			console.log(req.body.errors);
+			res.status(429).send(req.body.errors);
+		} else {
+			//use passport to login
+			passport.authenticate('local', function(err, user, info) {
+				if (err) { console.log(err); return next(err); }
 
-		Staff.findOne({username: req.body.username}, function(err, staffUserInfo){
-			if(err){
-				console.log(err);
-				res.status(400).send({ok: false});
-			} else {
-				if (staffUserInfo == null){
-					console.log('Account not found!');
-					res.status(404).send({ok: false, notFound: true});
-				} else {
-					console.log('Account found!');
-					bcrypt.compare(req.body.password, staffUserInfo.password).then(function(result){
-						if (result){
-							Staff.findByIdAndUpdate(staffUserInfo._id, { $set: { lastLoggedOn: (new Date) }}, function(err){
-								if(err){
-									console.log(err);
-									res.status(400).send({ok: false});
-								} else {
-									console.log('Logging in user', staffUserInfo.username);
-									console.log(req.session);
-									res.status(201).send({ok: true});
-								}
-							});
-						} else {
-							res.status(401).send({ok: false, badPassword: true});
-						}
-					})
-					//set req.sessionID to _id
-					//store session data in cookie or redis?
-					//figure out how to restrict all pages except login
-
+				if (!user){
+					console.log(info);
+					res.status(info.status).send(info);
 				}
-			}
-		});
+				//log in staff by setting req.user
+				req.logIn(user, function(err) {
+					if (err) { console.log('Passport.js login failed:', err); return next(err); }
+					console.log('Storing serialized staff in session:', req.session.passport.user);
+					res.status(info.status).send(info);
+				});
 
+		  
+			})(req, res, next);
+		}
 
 	} else {
+		//validation failed so send errors to React
 		res.status(422).send(req.body.errors);
 		console.log('Failed to login because:');
 		console.log(req.body.errors);
@@ -52,8 +52,10 @@ module.exports.staffLogin = function(req, res, next) {
 
 module.exports.registerStaff = function (req, res, next) {
 
+	//check if passed validation
 	if (req.session.validated){
 
+		//bcrypt the password so we dont know what it is
 		bcrypt.hash(req.body.password, 8).then(function(hash) {
 			
 			let staff = new Staff({
@@ -64,6 +66,7 @@ module.exports.registerStaff = function (req, res, next) {
 				email: req.body.email
 			});
 		
+			//save Staff with fancy password
 			staff.save(function (err) {
 				if (err) {
 					//Mongoose validation took place here, checking for duplicate username or email
@@ -78,6 +81,7 @@ module.exports.registerStaff = function (req, res, next) {
 	  	});
 
 	} else {
+		//validation failed so send errors to React
 		res.status(422).send(req.body.errors);
 		console.log('Failed to add staff because:');
 		console.log(req.body.errors);
@@ -107,8 +111,7 @@ module.exports.updateStaff = function (req, res, next) {
 			username: req.body.updateUsername,
 			password: req.body.updatePassword,
 			email: req.body.updateEmail,
-			assignedClaims: req.body.updateAssignedClaims,
-			lastLoggedOn: Date.now
+			assignedClaims: req.body.updateAssignedClaims
 		}
 	};
 	Staff.updateOne(query, update, function (err) {

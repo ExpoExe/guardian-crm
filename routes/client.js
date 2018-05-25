@@ -1,5 +1,7 @@
 var express = require('express');
 var clientsController = require('../controllers/client');
+var authCheck = require('../helpers/isLoggedIn');
+
 
 var router = express.Router();
 
@@ -12,13 +14,13 @@ router.get('/list', function (req, res) {
 });
 
 /* Add a client */
-router.post('/create', clientsController.createClient);
+router.post('/create', authCheck.isLoggedIn, clientsController.createClient);
 
 /* Update a client */
-router.post('/update', clientsController.updateClient);
+router.post('/update', authCheck.isLoggedIn, clientsController.updateClient);
 
 /* Delete a client */
-router.post('/delete', clientsController.deleteClient);
+router.post('/delete', authCheck.isLoggedIn, clientsController.deleteClient);
 
 
 module.exports = router;

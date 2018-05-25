@@ -1,20 +1,35 @@
 import React from 'react';
+import { Container } from 'reactstrap';
 import LoginForm from './LoginForm';
-import RegistrationForm from './RegistrationForm';
-import { Link } from 'react-router-dom';
-import { Row, Container, Col } from 'reactstrap';
 
 export default class LoginPage extends React.Component {
 
+	constructor(props){
+		super(props);
+
+	}
+
 	render() {
-		return (
-			<div style={{maxWidth: '1000px', margin: '2% auto', textAlign: 'center'}}>
-				<Container fluid>
-					<h1>Welcome to the CRM</h1>
-					<Link to='/login'>Login</Link>| 
-					<Link to='/register'>Register</Link>
-				</Container>
-			</div>
-		);
+		if (this.props.referrer){
+			return (
+				<div style={{maxWidth: '1000px', margin: '2% auto'}}>
+					<Container fluid>
+						<h1>Welcome to the CRM</h1>
+						<LoginForm formHandler={this.props.handler} />
+						<h3>Sorry, you must be logged in to access {this.props.referrer}</h3>
+					</Container>
+				</div>
+			);
+		} else {
+			return (
+				<div style={{maxWidth: '1000px', margin: '2% auto'}}>
+					<Container fluid>
+						<h1>Welcome to the CRM</h1>
+						<LoginForm formHandler={this.props.handler} />
+					</Container>
+				</div>
+			);
+		}
+
 	}
 }
