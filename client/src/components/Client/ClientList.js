@@ -1,5 +1,5 @@
 import React from 'react'; // eslint-disable-line no-unused-vars
-import Loading from './Loading'; // eslint-disable-line no-unused-vars
+import Loading from '../Helpers/Loading'; // eslint-disable-line no-unused-vars
 import { Table } from 'reactstrap';
 
 export default class ClientList extends React.Component{

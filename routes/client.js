@@ -6,7 +6,9 @@ var authCheck = require('../helpers/isLoggedIn');
 var router = express.Router();
 
 /* Get clients */
-router.get('/list', function (req, res) {
+router.get('/list',
+authCheck.isLoggedIn,
+function (req, res) {
 	console.log('Getting clients from DB...');
 	clientsController.getAllClients(function (clients) {
 		res.json(clients);

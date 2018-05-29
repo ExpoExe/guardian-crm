@@ -3,15 +3,19 @@ var assert = require('assert');
 var bcrypt = require('bcrypt');
 var passport = require('passport');
 
-//implement forgot password thingy	
+// TODO implement forgot password thingy	
 
 module.exports.staffLogout = function(req, res, next) {
-	if(res.isAuth) {
-		console.log('Logging out:', req.user);
-		req.logout();
-	} else {
-		console.log('Oh...could not log out...');
+	console.log('Logging out:', req.user);
+	req.logOut(); // this is poop and doesnt work for some reason
+	req.session.destroy(function(){ //this logs them out by getting rid of cookie and session in redis, req.user might still be set?
+		res.clearCookie('connect.sid');
+		res.status(201).send({loggedOut: true});
 	}
+
+	);
+	console.log('req.user after logOut:', req.user);
+
 }
 
 module.exports.staffLogin = function(req, res, next) {
@@ -24,19 +28,17 @@ module.exports.staffLogin = function(req, res, next) {
 		} else {
 			//use passport to login
 			passport.authenticate('local', function(err, user, info) {
-				if (err) { console.log(err); return next(err); }
 
 				if (!user){
 					console.log(info);
 					res.status(info.status).send(info);
 				}
 				//log in staff by setting req.user
-				req.logIn(user, function(err) {
+				req.logIn(user.id, function(err) {
 					if (err) { console.log('Passport.js login failed:', err); return next(err); }
 					console.log('Storing serialized staff in session:', req.session.passport.user);
 					res.status(info.status).send(info);
 				});
-
 		  
 			})(req, res, next);
 		}

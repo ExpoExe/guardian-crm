@@ -37,10 +37,10 @@ export default class ClientNavBar extends React.Component {
 		e.preventDefault();
 
 		let self = this;
-		// TODO make logout work
 		fetch('/staff/logout', {
 			method: 'POST',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
+			credentials: 'include',
 			headers: new Headers({
 				'Content-Type': 'application/json'
 			})
@@ -55,7 +55,8 @@ export default class ClientNavBar extends React.Component {
 
 	render() {
 		if (!this.state.loggedIn){
-			return <Redirect to='/login' />;
+			window.location.reload();
+			return <div></div>
 		} else {
 			return (
 				<div>

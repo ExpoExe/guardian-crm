@@ -1,16 +1,12 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
-import LoginPage from './LoginPage';
-import DefaultPage from './DefaultPage';
+import LoginPage from './Login/LoginPage';
+import DefaultPage from './Defaults/DefaultPage';
 import RegistrationForm from './RegistrationForm';
-import PrivateRoute from './PrivateRoute';
-import Error404 from './Error404';
-import Unauthorized from './Unauthorized';
-import Client from './Client';
-import ClientCreate from './ClientCreate';
-import ClientList from './ClientList';
-import ClientDelete from './ClientDelete';
-import ClientUpdate from './ClientUpdate';
+import PrivateRoute from './Helpers/PrivateRoute';
+import Error404 from './Defaults/Error404';
+import Unauthorized from './Defaults/Unauthorized';
+import Client from './Client/Client';
 
 class App extends React.Component {
 
@@ -40,7 +36,6 @@ class App extends React.Component {
 	}
 
 	render() {
-		// TODO Make 404 page work with ?nested? Routes, or find good solution to be able to render DefaultPage AND Client together
 		if (!this.state.isLoggedIn){
 			return (
 				<Router>
@@ -52,19 +47,14 @@ class App extends React.Component {
 			);
 		} else {
 
-			//I think I need to start to organize the components folder
 			// here at the top level we will only route to main urls (/client, /admin, etc)
 			// within the /client component, we will route for /list, /create, etc
 			return (
 				<Router>
 					<Switch>
-						<Route path='/' component={DefaultPage} />
+						<Route exact path='/' component={DefaultPage} />
 						<PrivateRoute auth={this.state.isLoggedIn} path='/register' redirect={'/unauthorized'} component={RegistrationForm} />
 						<PrivateRoute auth={this.state.isLoggedIn} path='/client' redirect={'/unauthorized'} component={Client} />
-						<Route path='/client/list' component={ClientList} />
-						<Route path='/client/create' component={ClientCreate} />
-						<Route path='/client/delete' component={ClientDelete} />
-						<Route path='/client/update' component={ClientUpdate} />
 						<Route exact path='/unauthorized' component={Unauthorized} />
 						<Route path='*' component={Error404} />
 					</Switch>

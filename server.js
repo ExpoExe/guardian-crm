@@ -47,7 +47,7 @@ app.use('/client', clientsRouter);
 app.use('/staff', staffRouter);
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname+'/client/build/index.html'));
+	res.send('Error 404: Page not found!');
 });
 
 // catch 404 and forward to error handler

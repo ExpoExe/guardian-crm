@@ -1,6 +1,6 @@
 import React from 'react'; 
 import { Container, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import CustomAlertBox from './CustomAlertBox';
+import CustomAlertBox from './Alerts/CustomAlertBox';
 
 export default class RegistrationForm extends React.Component {
 	constructor(props) {

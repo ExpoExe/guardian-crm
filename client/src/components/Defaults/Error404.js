@@ -4,7 +4,7 @@ import { Container } from 'reactstrap';
 export default class Error404 extends React.Component {
 
 	render() {
-		if (this.props.location.pathname == '/login'){
+		if (this.props.location.pathname === '/login'){
 			return (
 				<div style={{maxWidth: '1000px', margin: '2% auto', textAlign: 'center'}}>
 					<Container fluid>

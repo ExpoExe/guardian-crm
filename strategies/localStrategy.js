@@ -8,18 +8,18 @@ module.exports = function(passport) {
 	// used to serialize the staff for the session
 	passport.serializeUser(function(staff, done) {
 		console.log('serializing staff...');
-		done(null, staff.id);
+		done(null, staff);
 	});
 
 	// used to deserialize the staff
 	passport.deserializeUser(function(id, done) {
-		console.log('deserializing staff...');
+		console.log('deserializing staff', id);
 		Staff.findById(id, function(err, staff) {
 				done(err, staff);
 		});
 	});
 
-	passport.use(new LocalStrategy(
+	passport.use('local', new LocalStrategy(
 		function(username, password, done) {
 
 			/* Search DB for user */
