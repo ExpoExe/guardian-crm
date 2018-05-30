@@ -1,12 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import Loading from './Helpers/Loading';
 import LoginPage from './Login/LoginPage';
-import DefaultPage from './Defaults/DefaultPage';
-import RegistrationForm from './RegistrationForm';
-import PrivateRoute from './Helpers/PrivateRoute';
-import Error404 from './Defaults/Error404';
-import Unauthorized from './Defaults/Unauthorized';
-import Client from './Client/Client';
+import AuthedApp from './AuthedApp';
 
 class App extends React.Component {
 
@@ -14,10 +10,10 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-			isLoggedIn: true
+			isLoggedIn: null,
+			user: null
 		}
 		this.authHandler();
-
 		this.authHandler = this.authHandler.bind(this)
 	}
 
@@ -30,13 +26,16 @@ class App extends React.Component {
 		.catch(err => console.error('Request Failure:', err))
 		.then(function(res) {
 			self.setState({
-				isLoggedIn: res.isAuth
+				isLoggedIn: res.isAuth,
+				staff: res.staff
 			});
 		});
 	}
 
 	render() {
-		if (!this.state.isLoggedIn){
+		if (this.state.isLoggedIn === null){
+			return ( <Loading /> );
+		} else if (!this.state.isLoggedIn){
 			return (
 				<Router>
 					<Switch>
@@ -46,18 +45,9 @@ class App extends React.Component {
 				</Router>
 			);
 		} else {
-
-			// here at the top level we will only route to main urls (/client, /admin, etc)
-			// within the /client component, we will route for /list, /create, etc
 			return (
 				<Router>
-					<Switch>
-						<Route exact path='/' component={DefaultPage} />
-						<PrivateRoute auth={this.state.isLoggedIn} path='/register' redirect={'/unauthorized'} component={RegistrationForm} />
-						<PrivateRoute auth={this.state.isLoggedIn} path='/client' redirect={'/unauthorized'} component={Client} />
-						<Route exact path='/unauthorized' component={Unauthorized} />
-						<Route path='*' component={Error404} />
-					</Switch>
+					<AuthedApp staff={this.state.staff} />
 				</Router>
 			);
 		}

@@ -28,13 +28,16 @@ router.post(
 	validation.checkValidationResult,
 	controller.registerStaff);
 
-/* Get staff */
+/* Get all staff */
 router.get('/list', function (req, res) {
-	console.log('Getting staff from DB...');
+	console.log('Getting all staff from DB...');
 	controller.getAllStaff(function (staff) {
 		res.json(staff);
 	});
 });
+
+/* Get one staff */
+router.get('/dashboard/:username', controller.getOneStaff);
 
 /* Update a staff */
 router.post('/update', authCheck.isLoggedIn, controller.updateStaff);

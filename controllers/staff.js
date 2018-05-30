@@ -4,6 +4,9 @@ var bcrypt = require('bcrypt');
 var passport = require('passport');
 
 // TODO implement forgot password thingy	
+// TODO implement change password thingy
+// TODO touch cookie to not expire every day
+// TODO method to get all info of single staff member
 
 module.exports.staffLogout = function(req, res, next) {
 	console.log('Logging out:', req.user);
@@ -12,10 +15,7 @@ module.exports.staffLogout = function(req, res, next) {
 		res.clearCookie('connect.sid');
 		res.status(201).send({loggedOut: true});
 	}
-
 	);
-	console.log('req.user after logOut:', req.user);
-
 }
 
 module.exports.staffLogin = function(req, res, next) {
@@ -58,7 +58,7 @@ module.exports.registerStaff = function (req, res, next) {
 	if (req.session.validated){
 
 		//bcrypt the password so we dont know what it is
-		bcrypt.hash(req.body.password, 8).then(function(hash) {
+		bcrypt.hash(req.body.password, 12).then(function(hash) {
 			
 			let staff = new Staff({
 				firstName: req.body.firstName,
@@ -95,6 +95,17 @@ module.exports.getAllStaff = function (cb) {
 	Staff.find({}, function (err, staff) {
 		assert.equal(null, err);
 		cb(staff);
+	});
+};
+
+module.exports.getOneStaff = function (req, res, next) {
+	console.log('Getting one staff with params as:', req.params);
+	Staff.find({username: req.params.username}, function (err, staff) {
+		if (staff){
+			res.status(201).send(staff);
+		} else {
+			return next(err);
+		}
 	});
 };
 

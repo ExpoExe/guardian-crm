@@ -7,7 +7,6 @@ var router = express.Router();
 
 /* Get clients */
 router.get('/list',
-authCheck.isLoggedIn,
 function (req, res) {
 	console.log('Getting clients from DB...');
 	clientsController.getAllClients(function (clients) {

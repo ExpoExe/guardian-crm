@@ -1,6 +1,6 @@
 import React from 'react'; 
 import { Container, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-import CustomAlertBox from './Alerts/CustomAlertBox';
+import CustomAlertBox from '../Alerts/CustomAlertBox';
 
 export default class RegistrationForm extends React.Component {
 	constructor(props) {
@@ -101,6 +101,7 @@ export default class RegistrationForm extends React.Component {
 
 		return (
 			<div>
+			<h2>New Staff Registration</h2>
 				<Container fluid>
 					<Form onSubmit={this.handleRegister}>
 						<FormGroup row>

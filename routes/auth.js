@@ -7,10 +7,15 @@ router.get('/', function (req, res) {
 	console.log('Checking if user is logged in...');
 	if (req.user) {
 		console.log('User is logged in!');
-		// if user is authenticated in the session, carry on
-		res.json({isAuth: true})
+		let staff = {username: req.user.username,
+						lastLoggedOn: req.user.lastLoggedOn,
+						id: req.user._id,
+						firstName: req.user.firstName,
+						lastName: req.user.lastName,
+						email: req.user.email}
+		res.json({isAuth: true, staff: staff})
 	} else {
-		res.status(401).json({isAuth: false})
+		res.status(401).json({isAuth: false, staff: null})
 	}
 
 });

@@ -4,11 +4,6 @@ import LoginForm from './LoginForm';
 
 export default class LoginPage extends React.Component {
 
-	constructor(props){
-		super(props);
-
-	}
-
 	render() {
 		if (this.props.referrer){
 			return (
