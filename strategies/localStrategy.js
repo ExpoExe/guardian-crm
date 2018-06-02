@@ -8,7 +8,7 @@ module.exports = function(passport) {
 	// used to serialize the staff for the session
 	passport.serializeUser(function(staff, done) {
 		console.log('serializing staff...');
-		done(null, staff);
+		done(null, staff._id);
 	});
 
 	// used to deserialize the staff

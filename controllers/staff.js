@@ -4,9 +4,46 @@ var bcrypt = require('bcrypt');
 var passport = require('passport');
 
 // TODO implement forgot password thingy	
-// TODO implement change password thingy
 // TODO touch cookie to not expire every day
-// TODO method to get all info of single staff member
+
+// TODO implement change password thingy - WIP
+module.exports.staffChangePassword = function (req, res, next) {
+	console.log('Attempting to update staff password...');
+	//check if passed validation
+	if (req.body.validated){
+
+		/* Check if password is correct */
+		bcrypt.compare(req.body.currentPassword, req.user.password).then(function(result){
+			if (result){
+				//bcrypt the password so we dont know what it is
+				bcrypt.hash(req.body.newPassword, 12).then(function(hash) {
+					Staff.updateOne({ 'username': req.user.username }, { $set: { password: hash } }, function (err) {
+						if (err) {
+							res.status(400).send({ok: false, badPassword: null});
+						} else {
+							console.log('Success...updated staff password for user', req.user.username);
+							next(req, res, next, {ok: true, badPassword: false})
+							//TODO left off making user log out after 5 seconds
+							//res.status(201).send({ok: true, badPassword: false});
+						}
+					});
+				});
+
+			} else {
+				console.log(req.user);
+				console.log('Wrong password entered for staff:', req.user.username);
+				//password was wrong
+				res.status(401).send({ok: false, badPassword: true});
+			}
+		});
+
+	} else {
+		//validation failed so send errors to React
+		res.status(422).send(req.body.errors);
+		console.log('Failed to update password because:');
+		console.log(req.body.errors);
+	}
+};
 
 module.exports.staffLogout = function(req, res, next) {
 	console.log('Logging out:', req.user);
@@ -34,7 +71,7 @@ module.exports.staffLogin = function(req, res, next) {
 					res.status(info.status).send(info);
 				}
 				//log in staff by setting req.user
-				req.logIn(user.id, function(err) {
+				req.logIn(user, function(err) {
 					if (err) { console.log('Passport.js login failed:', err); return next(err); }
 					console.log('Storing serialized staff in session:', req.session.passport.user);
 					res.status(info.status).send(info);
@@ -116,7 +153,6 @@ module.exports.updateStaff = function (req, res, next) {
 		return;
 	}
 
-	let query = { '_id': req.body.updateID };
 	let update = {
 		$set: {
 			firstName: req.body.updateFirstName,
@@ -127,7 +163,7 @@ module.exports.updateStaff = function (req, res, next) {
 			assignedClaims: req.body.updateAssignedClaims
 		}
 	};
-	Staff.updateOne(query, update, function (err) {
+	Staff.updateOne({ '_id': req.body.updateID }, update, function (err) {
 		if (err) {
 			return next(err);
 		} else {

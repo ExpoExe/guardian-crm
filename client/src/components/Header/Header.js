@@ -8,7 +8,7 @@ import {
 	NavItem,
 	NavLink
 } from 'reactstrap';
-import { BrowserRouter as Router, Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 export default class Header extends React.Component {
 	constructor(props) {
@@ -56,20 +56,29 @@ export default class Header extends React.Component {
 			return <div></div>
 		} else {
 			return (
-				<Navbar color="light" light expand="md">
-				<NavbarBrand>Welcome {this.props.staff.firstName} {this.props.staff.lastName}</NavbarBrand>
+				<Navbar color='light' light expand='md'>
+				<NavbarBrand tag={Link} to={'/staff/'+this.props.staff.username}>Gaurdian PAMS</NavbarBrand>
 				<NavbarToggler onClick={this.toggleNavbar} />
 				<Collapse isOpen={this.state.isOpen} navbar>
-					<Nav className="ml-auto" navbar>
+					<Nav className='ml-auto' navbar>
 						<NavItem>
-							<NavLink tag={Link} to="/staff/dashboard">Dashboard</NavLink>
+							<NavLink tag={Link} to={'/staff/'+this.props.staff.username}>Your Dashboard</NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink tag={Link} to="/client">Clients</NavLink>
+							<NavLink tag={Link} to='/client'>Clients</NavLink>
 						</NavItem>
 						<NavItem>
-							<NavLink tag={Link} to="/claims">Claims</NavLink>
+							<NavLink tag={Link} to='/claims'>Claims</NavLink>
 						</NavItem>
+						<NavItem>
+							<NavLink tag={Link} to='/companies'>Companies</NavLink>
+						</NavItem>
+						{
+							this.props.staff.employeeType === 'admin' && 
+							<NavItem>
+								<NavLink tag={Link} to='/admin'>Admin</NavLink>
+							</NavItem>
+						}
 						<NavItem>
 							<NavLink onClick={this.handleLogout}>Logout</NavLink>
 						</NavItem>

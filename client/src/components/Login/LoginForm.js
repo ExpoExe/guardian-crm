@@ -57,11 +57,11 @@ export default class LoginForm extends React.Component {
 			.catch(err => console.error('Request Failure:', err))
 			.then(function(res) {
 				if (res.status === 201){
-					self.props.formHandler();
 					self.setState({
 						username: '',
 						password: ''
 					});
+					self.props.formHandler();
 				} else {
 					if (res.tooManyAttempts){ self.setState({ tooManyAttempts: true, tooManyAttemptsMessage: res.tooManyAttempts }); }
 					if (res.notFound){ self.setState({ notFoundErr: true }); }

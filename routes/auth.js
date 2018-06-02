@@ -12,7 +12,8 @@ router.get('/', function (req, res) {
 						id: req.user._id,
 						firstName: req.user.firstName,
 						lastName: req.user.lastName,
-						email: req.user.email}
+						email: req.user.email,
+						employeeType: req.user.employeeType}
 		res.json({isAuth: true, staff: staff})
 	} else {
 		res.status(401).json({isAuth: false, staff: null})

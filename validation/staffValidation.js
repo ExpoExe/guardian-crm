@@ -43,6 +43,22 @@ module.exports.createValidationFor = function(form) {
 					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
 			  ];
 
+		case 'changepass':
+			  return [
+				sanitize(['currentPassword', 'newPassword'])
+					.trim(),
+				check('currentPassword')
+					.exists().withMessage('Password required.')
+					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.'),
+				check('newPassword')
+					.exists().withMessage('Password required.')
+					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
+					.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{6,}$/, "i").withMessage('Password must include one lowercase character, one uppercase character, a number, and a special character.'),
+				check('confirmNewPassword')
+					.exists()
+					.custom((value, { req }) => value === req.body.newPassword).withMessage('Passwords must match.')
+			  ];
+
 		 default:
 			  return [];
 	}

@@ -5,6 +5,15 @@ var bruteCheck = require('../helpers/bruteCheck');
 var authCheck = require('../helpers/isLoggedIn');
 var router = express.Router();
 
+/* Change Staff Password */
+router.post(
+	'/changepass',
+	authCheck.isLoggedIn,
+	validation.createValidationFor('changepass'),
+	validation.checkValidationResult,
+	controller.staffChangePassword);
+	//controller.staffLogout);
+
 /* Staff Logout */
 router.post(
 	'/logout',

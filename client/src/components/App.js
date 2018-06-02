@@ -11,7 +11,7 @@ class App extends React.Component {
 
 		this.state = {
 			isLoggedIn: null,
-			user: null
+			staff: null
 		}
 		this.authHandler();
 		this.authHandler = this.authHandler.bind(this)

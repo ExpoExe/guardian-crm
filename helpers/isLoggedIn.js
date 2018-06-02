@@ -1,5 +1,4 @@
 module.exports.isLoggedIn = function (req, res, next) {
-
 	console.log('Middleware checking if logged in...');
 	// if user is authenticated in the session, carry on 
 	if (req.user) { return next(); }

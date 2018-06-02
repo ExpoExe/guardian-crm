@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 var uniqueMongooseValidator = require('mongoose-unique-validator');
 var timestampUpdater = require('../helpers/timestampUpdater');
 var Schema = mongoose.Schema;
-// TODO add employee type and other stuff from scope
 var StaffSchema = new Schema({
 	firstName: { type: String, maxLength: 20 },
 	lastName: { type: String, maxLength: 20 },
@@ -11,6 +10,7 @@ var StaffSchema = new Schema({
 	email: { type: String, maxLength: 50, unique: true },
 	assignedClaims: [],
 	lastLoggedOn: { type: Date, default: null },
+	employeeType: {type: String, default: 'employee'} //can be: admin, adjuster, estimator, or employee
 }, {timestamps: true});
 
 StaffSchema.plugin(uniqueMongooseValidator);
