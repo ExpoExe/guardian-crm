@@ -2,7 +2,7 @@ var express = require('express');
 var passport = require('passport');
 var router = express.Router();
 
-//CLEANUP this gets checked with every GET request...idk if need
+// TODO this gets checked with every GET request...idk if need
 router.get('/', function (req, res) {
 	console.log('Checking if user is logged in...');
 	if (req.user) {

@@ -2,7 +2,7 @@ var express = require('express');
 var controller = require('../controllers/staff');
 var validation = require('../validation/staffValidation');
 var bruteCheck = require('../helpers/bruteCheck');
-var authCheck = require('../helpers/isLoggedIn');
+var authCheck = require('../helpers/authCheck');
 var router = express.Router();
 
 /* Change Staff Password */
@@ -46,12 +46,15 @@ router.get('/list', function (req, res) {
 });
 
 /* Get one staff */
-router.get('/dashboard/:username', controller.getOneStaff);
+router.get('/:username', controller.getOneStaff);
 
 /* Update a staff */
 router.post('/update', authCheck.isLoggedIn, controller.updateStaff);
 
+/* Update a staff as admin */
+router.post('/admin/update', authCheck.isLoggedIn, authCheck.checkIfAdmin, controller.updateStaff);
+
 /* Delete a staff */
-router.post('/delete', authCheck.isLoggedIn, controller.deleteStaff);
+router.post('/admin/delete', authCheck.isLoggedIn, authCheck.checkIfAdmin, controller.deleteStaff);
 
 module.exports = router;

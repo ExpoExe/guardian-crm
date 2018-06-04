@@ -4,60 +4,64 @@ const { matchedData, sanitize } = require('express-validator/filter');
 module.exports.createValidationFor = function(form) {
 	switch (form) {
 		 case 'register':
-			  return [
-				sanitize(['firstName', 'lastName', 'username'])
-					.trim()
-					.blacklist('\\\/\[\]<>:;\'\"'),
-				check(['firstName', 'lastName'])
-					.exists().withMessage('First and last name required.')
-					.isAlpha().withMessage('First and last name must be letters only.')
-					.isLength({ max: 20 }).withMessage('First and last name can only be 20 characters long.'),
-				check('username')
-					.exists().withMessage('Username required.')
-					.isAlphanumeric().withMessage('Username must be alphanumeric.')
-					.isLength({ max: 20 }).withMessage('Username can only be 20 characters long.'),
-				check('email')
-					.exists().withMessage('Email required.')
-					.isEmail().withMessage('Must be a valid email.')
-					.normalizeEmail()
-					.isLength({ max: 50 }).withMessage('Email can only be 50 characters long.'),
-				check('password')
-					.exists().withMessage('Password required.')
-					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
-					.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{6,}$/, "i").withMessage('Password must include one lowercase character, one uppercase character, a number, and a special character.'),
-				check('confirmPassword', 'Password fields must match.')
-					.exists()
-					.custom((value, { req }) => value === req.body.password).withMessage('Passwords must match.')
-			  ];
+			return [
+			sanitize(['firstName', 'lastName', 'username'])
+				.trim()
+				.blacklist('\\\/\[\]<>:;\'\"'),
+			check(['firstName', 'lastName'])
+				.exists().withMessage('First and last name required.')
+				.isAlpha().withMessage('First and last name must be letters only.')
+				.isLength({ max: 20 }).withMessage('First and last name can only be 20 characters long.'),
+			/*why cant I validate this correctly???
+			check('employeeType')
+				.exists().withMessage('Employee Type required.')
+				.isLength({max: 10}).withMessage('Invalid employee type.'),*/
+			check('email')
+				.exists().withMessage('Email required.')
+				.isEmail().withMessage('Must be a valid email.')
+				.normalizeEmail()
+				.isLength({ max: 50 }).withMessage('Email can only be 50 characters long.'),
+			check('username')
+				.exists().withMessage('Username required.')
+				.isAlphanumeric().withMessage('Username must be alphanumeric.')
+				.isLength({ max: 20 }).withMessage('Username can only be 20 characters long.'),
+			check('password')
+				.exists().withMessage('Password required.')
+				.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
+				.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{6,}$/, "i").withMessage('Password must include one lowercase character, one uppercase character, a number, and a special character.'),
+			check('confirmPassword', 'Password fields must match.')
+				.exists()
+				.custom((value, { req }) => value === req.body.password).withMessage('Passwords must match.')
+			];
 
 		case 'login':
-			  return [
-				sanitize(['username', 'password'])
-					.trim(),
-				check('username')
-					.exists().withMessage('Username required.')
-					.isAlphanumeric().withMessage('Username must be alphanumeric.')
-					.isLength({ max: 20 }).withMessage('Username can only be 20 characters long.'),
-				check('password')
-					.exists().withMessage('Password required.')
-					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
-			  ];
+			return [
+			sanitize(['username', 'password'])
+				.trim(),
+			check('username')
+				.exists().withMessage('Username required.')
+				.isAlphanumeric().withMessage('Username must be alphanumeric.')
+				.isLength({ max: 20 }).withMessage('Username can only be 20 characters long.'),
+			check('password')
+				.exists().withMessage('Password required.')
+				.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
+			];
 
 		case 'changepass':
-			  return [
-				sanitize(['currentPassword', 'newPassword'])
-					.trim(),
-				check('currentPassword')
-					.exists().withMessage('Password required.')
-					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.'),
-				check('newPassword')
-					.exists().withMessage('Password required.')
-					.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
-					.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{6,}$/, "i").withMessage('Password must include one lowercase character, one uppercase character, a number, and a special character.'),
-				check('confirmNewPassword')
-					.exists()
-					.custom((value, { req }) => value === req.body.newPassword).withMessage('Passwords must match.')
-			  ];
+			return [
+			sanitize(['currentPassword', 'newPassword'])
+				.trim(),
+			check('currentPassword')
+				.exists().withMessage('Password required.')
+				.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.'),
+			check('newPassword')
+				.exists().withMessage('Password required.')
+				.isLength({ min: 6, max: 40 }).withMessage('Password must be betweeen 6 and 40 characters long.')
+				.matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.* )(?=.*[^a-zA-Z0-9]).{6,}$/, "i").withMessage('Password must include one lowercase character, one uppercase character, a number, and a special character.'),
+			check('confirmNewPassword')
+				.exists()
+				.custom((value, { req }) => value === req.body.newPassword).withMessage('Passwords must match.')
+			];
 
 		 default:
 			  return [];

@@ -34,7 +34,22 @@ export default class ChangePasswordForm extends React.Component {
 	}
 
 	logStaffOut () {
+		const self = this;
 
+		fetch('/staff/logout', {
+			method: 'POST',
+			body: JSON.stringify(this.state), // data can be `string` or {object}!
+			credentials: 'include',
+			headers: new Headers({
+				'Content-Type': 'application/json'
+			})
+		}).then(res => res.json())
+			.catch(err => console.error('Request Failure:', err))
+			.then(function(res) {
+				self.setState({
+					loggedIn: false
+				});
+			});
 	}
 
 	handleSubmit (e) {
@@ -83,45 +98,50 @@ export default class ChangePasswordForm extends React.Component {
 	}
 
 	render() {
-		// TODO make it clear user will be logged out after successful update
-		return (
-			<div>
-			<h2>Change Password</h2>
-				<Container fluid>
-					<Form onSubmit={this.handleSubmit}>
-						<FormGroup row>
-							<Label for="currentPassword" sm={2}>Current Password</Label>
-							<Col sm={10}>
-								<Input required onChange={this.updateInput} value={this.state.currentPassword} type="password" name="currentPassword" id="currentPassword" />
-							</Col>
-						</FormGroup>
-						<FormGroup row>
-							<Label for="newPassword" sm={2}>New Password</Label>
-							<Col sm={10}>
-								<Input required onChange={this.updateInput} value={this.state.newPassword} type="password" name="newPassword" id="newPassword" />
-							</Col>
-						</FormGroup>
-						<CustomAlertBox type='warning' message={this.state.errors.newPassword} active={(this.state.errors.newPassword != null)} />
-						<FormGroup row>
-							<Label for="confirmNewPassword" sm={2}>Confirm New Password</Label>
-							<Col sm={10}>
-								<Input required onChange={this.updateInput} value={this.state.confirmPassword} type="password" name="confirmNewPassword" id="confirmNewPassword"  />
-							</Col>
-						</FormGroup>
-						<CustomAlertBox type='warning' message={this.state.errors.confirmNewPassword} active={(this.state.errors.confirmNewPassword != null)} />
-						<FormGroup row>
-							<Col sm={12}>
-								<Button color='info' block>Change Password</Button>
-							</Col>
-						</FormGroup>
-					</Form>		
-					<CustomAlertBox type='danger' message='Wrong current password' active={this.state.badPasswordErr} />
-					<CustomAlertBox type='success' message='Successfully changed password!' active={this.state.updatedPassword} />
-					{
-						this.state.updatedPassword && <p>You will be logged out in: <Countdown timer={5} /> </p>
-					}
-				</Container>
-			</div>
-		);
+		if (!this.state.loggedIn){
+			window.location.reload();
+			return <div></div>
+		} else {
+			return (
+				<div>
+				<h2>Change Password</h2>
+				<p>You will be logged out after successfully changing your password.</p>
+					<Container fluid>
+						<Form onSubmit={this.handleSubmit}>
+							<FormGroup row>
+								<Label for="currentPassword" sm={2}>Current Password</Label>
+								<Col sm={10}>
+									<Input required onChange={this.updateInput} value={this.state.currentPassword} type="password" name="currentPassword" id="currentPassword" />
+								</Col>
+							</FormGroup>
+							<FormGroup row>
+								<Label for="newPassword" sm={2}>New Password</Label>
+								<Col sm={10}>
+									<Input required onChange={this.updateInput} value={this.state.newPassword} type="password" name="newPassword" id="newPassword" />
+								</Col>
+							</FormGroup>
+							<CustomAlertBox type='warning' message={this.state.errors.newPassword} active={(this.state.errors.newPassword != null)} />
+							<FormGroup row>
+								<Label for="confirmNewPassword" sm={2}>Confirm New Password</Label>
+								<Col sm={10}>
+									<Input required onChange={this.updateInput} value={this.state.confirmPassword} type="password" name="confirmNewPassword" id="confirmNewPassword"  />
+								</Col>
+							</FormGroup>
+							<CustomAlertBox type='warning' message={this.state.errors.confirmNewPassword} active={(this.state.errors.confirmNewPassword != null)} />
+							<FormGroup row>
+								<Col sm={12}>
+									<Button color='info' block>Change Password</Button>
+								</Col>
+							</FormGroup>
+						</Form>		
+						<CustomAlertBox type='danger' message='Wrong current password' active={this.state.badPasswordErr} />
+						<CustomAlertBox type='success' message='Successfully changed password!' active={this.state.updatedPassword} />
+						{
+							this.state.updatedPassword && <p>You will be logged out in: <Countdown action={this.logStaffOut} timer={5} /> </p>
+						}
+					</Container>
+				</div>
+			);
+		}
 	}
 }

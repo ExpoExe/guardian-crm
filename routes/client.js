@@ -1,6 +1,6 @@
 var express = require('express');
 var clientsController = require('../controllers/client');
-var authCheck = require('../helpers/isLoggedIn');
+var authCheck = require('../helpers/authCheck');
 
 
 var router = express.Router();

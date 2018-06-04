@@ -6,7 +6,6 @@ var passport = require('passport');
 // TODO implement forgot password thingy	
 // TODO touch cookie to not expire every day
 
-// TODO implement change password thingy - WIP
 module.exports.staffChangePassword = function (req, res, next) {
 	console.log('Attempting to update staff password...');
 	//check if passed validation
@@ -22,9 +21,7 @@ module.exports.staffChangePassword = function (req, res, next) {
 							res.status(400).send({ok: false, badPassword: null});
 						} else {
 							console.log('Success...updated staff password for user', req.user.username);
-							next(req, res, next, {ok: true, badPassword: false})
-							//TODO left off making user log out after 5 seconds
-							//res.status(201).send({ok: true, badPassword: false});
+							res.status(201).send({ok: true, badPassword: false});
 						}
 					});
 				});
@@ -90,9 +87,10 @@ module.exports.staffLogin = function(req, res, next) {
 }
 
 module.exports.registerStaff = function (req, res, next) {
-
+// TODO I should generate a random password then email it to user
+// because the staff member will not be the one creating the account/setting password they want
 	//check if passed validation
-	if (req.session.validated){
+	if (req.body.validated){
 
 		//bcrypt the password so we dont know what it is
 		bcrypt.hash(req.body.password, 12).then(function(hash) {
@@ -102,7 +100,8 @@ module.exports.registerStaff = function (req, res, next) {
 				lastName: req.body.lastName,
 				username: req.body.username,
 				password: hash,
-				email: req.body.email
+				email: req.body.email,
+				employeeType: req.body.employeeType
 			});
 		
 			//save Staff with fancy password
@@ -147,6 +146,7 @@ module.exports.getOneStaff = function (req, res, next) {
 };
 
 module.exports.updateStaff = function (req, res, next) {
+	// TODO check if admin to determine what data to save
 	console.log('Attempting to update staff...');
 	if (Object.keys(req.body.updateID).length === 0) {
 		console.log('No ID!');
@@ -177,8 +177,7 @@ module.exports.deleteStaff = function (req, res, next) {
 	Staff.findByIdAndRemove(req.body.deleteID, function (err) {
 		if (err){
 			return next(err);
-		}
-		else{
+		} else {
 			console.log('Success...deleted staff with ID: ' + req.body.deleteID);
 			return res;
 		}

@@ -18,7 +18,7 @@ export default class StaffDashboard extends React.Component{
 
 		const self = this;
 		
-		fetch('/staff/dashboard/'+this.props.staff.username)
+		fetch('/staff/'+this.props.staff.username)
 			.then(res => res.json())
 			.then(function(data){
 				delete data[0].password;
@@ -37,10 +37,7 @@ export default class StaffDashboard extends React.Component{
 				<div style={{maxWidth:'1200px', margin:'2% auto'}}>
 					<h2>Welcome {this.state.staff_data.firstName} {this.state.staff_data.lastName}</h2>
 					<Link to='/staff/changepass'>Change Password</Link> <br/>
-					{
-					this.state.staff_data.employeeType === 'admin' && 
-					<Link to='/staff/register'>Register New Staff</Link>
-					}
+
 					<h3>Assigned Claims:</h3>
 					<Table responsive hover striped>
 						<thead>

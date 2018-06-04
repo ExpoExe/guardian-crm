@@ -1,7 +1,7 @@
 import React from 'react'; 
 import { Container, Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import CustomAlertBox from '../Alerts/CustomAlertBox';
-// TODO update with employee type field
+
 export default class RegistrationForm extends React.Component {
 	constructor(props) {
 		super(props);
@@ -9,13 +9,15 @@ export default class RegistrationForm extends React.Component {
 		this.state = {
 			firstName: '',
 			lastName: '',
-			username: '',
+			employeeType: '',
 			email: '',
+			username: '',
 			password: '',
 			confirmPassword: '',
 			errors: {
 				firstName: null,
 				lastName: null,
+				employeeType: null,
 				username: null,
 				email: null,
 				password: null,
@@ -44,6 +46,7 @@ export default class RegistrationForm extends React.Component {
 			errors: {
 				firstName: null,
 				lastName: null,
+				employeeType: null,
 				username: null,
 				email: null,
 				password: null,
@@ -53,6 +56,7 @@ export default class RegistrationForm extends React.Component {
 
 		fetch('/staff/register', {
 			method: 'POST',
+			credentials: 'include',
 			body: JSON.stringify(this.state), // data can be `string` or {object}!
 			headers: new Headers({
 				'Content-Type': 'application/json'
@@ -65,6 +69,7 @@ export default class RegistrationForm extends React.Component {
 					self.setState({
 						firstName: '',
 						lastName: '',
+						employeeType: '',
 						username: '',
 						email: '',
 						password: '',
@@ -81,6 +86,7 @@ export default class RegistrationForm extends React.Component {
 							errors: {
 								firstName: res.firstName,
 								lastName: res.lastName,
+								employeeType: res.employeeType,
 								username: res.username,
 								email: res.email,
 								password: res.password,
@@ -119,12 +125,18 @@ export default class RegistrationForm extends React.Component {
 						</FormGroup>
 						<CustomAlertBox type='warning' message={this.state.errors.lastName} active={(this.state.errors.lastName != null)} />
 						<FormGroup row>
-							<Label for="username" sm={2}>Username</Label>
+							<Label for="employeeType" sm={2}>Select</Label>
 							<Col sm={10}>
-								<Input required onChange={this.updateInput} value={this.state.username} type="text" name="username" id="username" />
+								<Input required onChange={this.updateInput} type="select" value={this.state.employeeType} name="employeeType" id="employeeType">
+									<option value="">Please Select One</option>
+									<option value="employee">Employee</option>
+									<option value="estimator">Estimator</option>
+									<option value="adjuster">Adjuster</option>
+									<option value="admin">Admin</option>
+								</Input>
 							</Col>
-						</FormGroup>
-						<CustomAlertBox type='warning' message={this.state.errors.username} active={(this.state.errors.username != null)} />
+						 </FormGroup>
+						 <CustomAlertBox type='warning' message={this.state.errors.employeeType} active={(this.state.errors.employeeType != null)} />
 						<FormGroup row>
 							<Label for="email" sm={2}>Email</Label>
 							<Col sm={10}>
@@ -132,6 +144,13 @@ export default class RegistrationForm extends React.Component {
 							</Col>
 						</FormGroup>
 						<CustomAlertBox type='warning' message={this.state.errors.email} active={(this.state.errors.email != null)} />
+						<FormGroup row>
+							<Label for="username" sm={2}>Username</Label>
+							<Col sm={10}>
+								<Input required onChange={this.updateInput} value={this.state.username} type="text" name="username" id="username" />
+							</Col>
+						</FormGroup>
+						<CustomAlertBox type='warning' message={this.state.errors.username} active={(this.state.errors.username != null)} />
 						<FormGroup row>
 							<Label for="password" sm={2}>Password</Label>
 							<Col sm={10}>

@@ -4,6 +4,7 @@ import Footer from './Footer/Footer';
 import Header from './Header/Header';
 import Error404 from './Defaults/Error404';
 import Client from './Client/Client';
+import Admin from './Admin/Admin';
 import Staff from './Staff/Staff';
 
 export default class AuthedApp extends React.Component {
@@ -18,6 +19,7 @@ export default class AuthedApp extends React.Component {
 				<Switch>
 					<Route path='/login' render={(props) => <Redirect to={'/staff/'+this.props.staff.username} />} />
 					<Route path='/staff' render={(props) => <Staff {...props} staff={this.props.staff} />} />
+					<Route path='/admin' component={Admin} />
 					<Route path='/client' component={Client} />
 					<Route path='*' component={Error404} />
 				</Switch>

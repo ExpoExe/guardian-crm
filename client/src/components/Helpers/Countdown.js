@@ -15,9 +15,19 @@ class Countdown extends React.Component{
 				: this.setState((prevState) => ({ timer: prevState.timer-1 }));
 		}, 1000);
 	}
+
+	componentDidUpdate(prevProps, prevState){
+		console.log('Component did update...');
+		if (this.props.action && prevState.timer === 0){
+			console.log('Should refresh now!');
+			this.props.action();
+		}
+	}
+
 	componentWillUnmount(){
 		window.clearInterval(this.interval);
 	}
+
 	render(){
 		return (
 			<span> {this.state.timer} </span>
